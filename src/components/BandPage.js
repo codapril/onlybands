@@ -11,20 +11,30 @@ function BandPage( {bands} ) {
     const band = bands.find(band => band._id.toString() === id);
 
 
-    const increaseLikes = () => {
-        setLikes(prevCount => {
-          const newLikes = Number(prevCount) + 1;
-          localStorage.setItem(`likes-${id}`, newLikes);
-          return newLikes;
+    const handleLike = async () => {
+        const response = await fetch(`http://localhost:5000/likes/${id}`, {
+            method: "POST",
         });
+
+        if (response.ok) {
+            setLikes((prevLikes) => prevLikes + 1);
+        } else {
+            console.error("Error updating like", response.statusText);
+        }
+        
     };
 
     useEffect(() => {
-        const initLikes = localStorage.getItem(`likes-${id}`);
-        if (initLikes) setLikes(initLikes);
-    }, [id]);
+        fetch(`http://localhost:5000/bands/${id}`)
+            .then((response) => response.json)
+            .then(data => {
+                console.log(data) // TODO
+                setLikes(data.likes)
+            })
+            .catch((error) => console.log(error));
+    }, [id])
 
-   
+
 
     if (!band) {
         return <div>Band not found</div>
@@ -35,7 +45,7 @@ function BandPage( {bands} ) {
                 <h3>{band.name} page</h3>
                 <p>{band.infoText}</p>
                 <ButtonGroup>
-                    <Button onClick={increaseLikes}>Like</Button>
+                    <Button onClick={handleLike}>Like</Button>
                 </ButtonGroup>
                 <p>Likes: {likes}</p>
             </div>
