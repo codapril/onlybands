@@ -25,7 +25,6 @@ async function startServer() {
 
 		app.get("/bands/:id", async (req, res) => {
 			const band = await mongoClient.db("bands").collection("bands").findOne({_id: new ObjectId(req.params.id)});
-			// TODO: WHY IS THIS AN OBJECT HERE BUT A FUNCTION IN MY COMPONENT AAAAA
 			res.json(band)
 		})
 

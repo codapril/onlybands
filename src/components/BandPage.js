@@ -11,24 +11,15 @@ function BandPage( {bands} ) {
     const band = bands.find(band => band._id.toString() === id);
 
 
-    const handleLike = async () => {
-        const response = await fetch(`http://localhost:5000/likes/${id}`, {
-            method: "POST",
-        });
-
-        if (response.ok) {
-            setLikes((prevLikes) => prevLikes + 1);
-        } else {
-            console.error("Error updating like", response.statusText);
-        }
-        
+    const handleLike = () => {
+       fetch(`http://localhost:5000/likes/${id}`, {method: "POST"})
+        .then(setLikes((prevLikes) => prevLikes + 1))
     };
 
     useEffect(() => {
         fetch(`http://localhost:5000/bands/${id}`)
-            .then((response) => response.json)
+            .then(response => response.json())
             .then(data => {
-                console.log(data) // TODO
                 setLikes(data.likes)
             })
             .catch((error) => console.log(error));
