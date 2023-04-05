@@ -1,4 +1,4 @@
-import Layout from "./Layout"
+import React from "react";
 
 function Profile() {
 

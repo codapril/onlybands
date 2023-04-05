@@ -2,8 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Button, ButtonGroup } from "react-bootstrap";
 
-import Layout from "./Layout";
-
 
 function BandPage( {bands} ) {
 
@@ -24,7 +22,7 @@ function BandPage( {bands} ) {
     useEffect(() => {
         const initLikes = localStorage.getItem(`likes-${id}`);
         if (initLikes) setLikes(initLikes);
-    }, []);
+    }, [id]);
 
    
 
