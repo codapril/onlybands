@@ -1,13 +1,14 @@
 const express = require("express");
 const cors = require("cors");
+require("dotenv").config({ path: "./config.env" });
 const { MongoClient, ObjectId } = require("mongodb");
 
-const mongoClient = new MongoClient("mongodb://localhost:27017", {
+const mongoClient = new MongoClient(process.env.MONGODB_URI, {
 	useNewUrlParser: true,
 	useUnifiedTopology: true,
 });
 
-const PORT = 5000
+const port = process.env.SERVER_PORT;
 
 const app = express();
 app.use(cors());
@@ -46,8 +47,8 @@ async function startServer() {
 			)
 		})
 
-		app.listen(PORT, () => {
-			console.log(`Server listening on port ${PORT}`);
+		app.listen(port, () => {
+			console.log(`Server listening on port ${port}`);
 		});
 
   } catch (error) {

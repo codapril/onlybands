@@ -12,12 +12,12 @@ function BandPage( {bands} ) {
 
 
     const handleLike = () => {
-       fetch(`http://localhost:5000/likes/${id}`, {method: "POST"})
+       fetch(`${process.env.REACT_APP_SERVER_URL}/likes/${id}`, {method: "POST"})
         .then(setLikes((prevLikes) => prevLikes + 1))
     };
 
     useEffect(() => {
-        fetch(`http://localhost:5000/bands/${id}`)
+        fetch(`${process.env.REACT_APP_SERVER_URL}/bands/${id}`)
             .then(response => response.json())
             .then(data => {
                 setLikes(data.likes)

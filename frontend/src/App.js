@@ -7,14 +7,14 @@ import Profile from "./components/Profile";
 import Settings from "./components/Settings"
 import Layout from './components/Layout';
 
-
 function App() {
 
+  
   const [bands, setBands] = useState([])
 
   useEffect(() => {
     async function fetchData() {
-      const response = await fetch('http://localhost:5000/bands');
+      const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/bands`);
       const data = await response.json();
       setBands(data);
     }
