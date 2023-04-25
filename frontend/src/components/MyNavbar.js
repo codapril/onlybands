@@ -14,7 +14,10 @@ function MyNavbar() {
         }).then(
             res => res.json()
         ).then(
-            data => data.isLoggedIn ? setUsername(data.username) : null
+            data => {
+                if (data.isLoggedIn) setUsername(data.username)
+                else setUsername(null)
+            }
         )
     });
 
@@ -24,9 +27,10 @@ function MyNavbar() {
                 <Navbar.Brand href="/">OnlyBands</Navbar.Brand>
                 <Nav>
                     <Nav.Link href="/register">Register</Nav.Link>
-                    { username
-                        ? <Nav.Link href="/profile">My Profile</Nav.Link>
-                        : <Nav.Link href="/login">Login</Nav.Link>
+                    {
+                        username
+                            ? <Nav.Link href={"/profile/" + username}>{username}'s Profile</Nav.Link>
+                            : <Nav.Link href="/login">Login</Nav.Link>
                     }
                     <Nav.Link href="/explore">Explore</Nav.Link>
                     <Nav.Link href="/settings">Settings</Nav.Link>

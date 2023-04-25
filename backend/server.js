@@ -15,10 +15,8 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-console.log(process.env.JWT_SECRET)
-
-
 function verifyJWT(req, res, next) {
+
 	const token = req.headers["x-access-token"]?.split(' ')[1]; // to remove "Bearer "
 
 	if (token) {
@@ -30,7 +28,7 @@ function verifyJWT(req, res, next) {
 			req.user = {};
 			req.user.id = decoded.id;
 			req.user.username = decoded.username;
-			next();
+			next()		
 		})
 	} else {
 		res.json({
@@ -74,7 +72,6 @@ async function startServer() {
 
 		// Login
 		app.post("/login", async (req, res) => {
-
 			const userLoggingIn = req.body;
 
 			User.findOne({username: userLoggingIn.username}).then(
@@ -84,8 +81,16 @@ async function startServer() {
 							message: "Invalid username or password"
 						})
 					}
+
 					bcrypt.compare(userLoggingIn.password, dbUser.password).then(
 						isCorrect => {
+
+							if (!isCorrect) {
+								return res.json({
+									message: "Invalid username or password"
+								})
+							}
+
 							const payload = {
 								id: dbUser._id,
 								username: dbUser.username
@@ -111,7 +116,7 @@ async function startServer() {
 
 		// Get current user
 		app.get("/getUsername", verifyJWT, (req, res) => {
-			res.json({isLoggedIn: true, username: req.user.username});
+			return res.json({isLoggedIn: true, username: req.user.username});	
 		})
 
 		// Retrieve all bands
